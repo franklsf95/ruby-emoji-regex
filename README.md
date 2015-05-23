@@ -1,7 +1,10 @@
 Regex for Emoji
 ===============
 
-A regular expression that matches all 1012 single-character Unicode Emoji (all except for two-character flags). Matches all 1012 single-character emoji. `update_emoji.rb` grabs the full emoji listing from [the Unicode Emoji proposal (TR51)](http://www.unicode.org/Public/emoji/1.0/emoji-data.txt). `process.rb` produces a single regex by combining 
+A regular expression that matches all 1012 single-character Unicode Emoji (all except for two-character flags).
+
+- `fetch_emoji_data.rb` grabs the full emoji listing from [the Unicode Emoji proposal (TR51)](http://www.unicode.org/Public/emoji/1.0/emoji-data.txt).
+- `process.rb` produces a single regex that matches all the Unicode bytes in the data source.
 
 Note: Two-character emoji, allocated for the recent flag extensions, are not supported. The recent single-character emoji additions, however, are.  
 
