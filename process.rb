@@ -16,7 +16,7 @@ left = ''
 right = -1
 in_range = false
 ranges = []
-File.open("output.txt").each do |line|
+File.open("emoji_sorted.txt").each do |line|
     hex = line.to_i(16)
     if hex == prev || hex == prev + 1
         # Continuous
