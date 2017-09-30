@@ -3,13 +3,25 @@ require 'open-uri'
 # Script pulls emoji definitions off of the Unicode website and
 # creates an output.txt with just the codes for input to process.rb
 
-unicode_url = 'http://www.unicode.org/Public/emoji/1.0/emoji-data.txt'
+unicode_url = 'https://www.unicode.org/Public/emoji/6.0/emoji-data.txt'
 file_contents = open(unicode_url) { |f| f.read }
-emoji_code = file_contents.split("\n").map{ |x| x.split(" ;\t")[0] }
+emoji_code = file_contents.split("\n").map{ |x| x.split(" ;")[0] }.compact.map(&:rstrip)
 output_file = 'emoji_sorted.txt'
 
 File.open(output_file, 'w') do |f|
   emoji_code.each do |line|
-    f << line << "\n" if line[0] != '#'
+    case line
+    when /^#/
+      nil # don't include commented lines
+    when /^(0023|002A|0030)/
+      nil # don't include number sign, asterisk, or digits
+    when /^.{4,5}\.\./
+      start_code_hex, end_code_hex = line.split('..')
+      base_10_code_range = (start_code_hex.to_i(16)..end_code_hex.to_i(16))
+      hex_codes = base_10_code_range.to_a.map { |base_10_code| base_10_code.to_s(16).rjust(4, '0').upcase }
+      hex_codes.each { |code| f << code << "\n" }
+    else
+      f << line << "\n"
+    end
   end
 end
